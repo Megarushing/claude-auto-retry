@@ -106,7 +106,7 @@ Optional. Create `~/.claude-auto-retry.json`:
   "pollIntervalSeconds": 5,
   "marginSeconds": 60,
   "fallbackWaitHours": 5,
-  "retryMessage": "Continue where you left off. The previous attempt was rate limited.",
+  "retryMessage": "Continue where you left off.",
   "customPatterns": ["my custom pattern"]
 }
 ```
