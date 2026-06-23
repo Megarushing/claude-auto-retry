@@ -39,6 +39,12 @@ describe('isRateLimited', () => {
   it('detects "rate limit resets"', () => {
     assert.equal(isRateLimited('Rate limit hit. Resets at 4pm'), true);
   });
+  it('detects "hit your session limit" with words between "your" and "limit"', () => {
+    assert.equal(isRateLimited("You've hit your session limit · resets 5pm (Europe/Lisbon)"), true);
+  });
+  it('returns false for unrelated "limit" with no reset nearby', () => {
+    assert.equal(isRateLimited('I hit the file size limit'), false);
+  });
   it('returns false for normal output', () => {
     assert.equal(isRateLimited('I can help you with that code'), false);
   });
