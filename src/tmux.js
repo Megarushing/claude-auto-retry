@@ -8,7 +8,11 @@ export function buildCaptureArgs(pane, lines = 200) {
 }
 
 export function buildSendKeysArgs(pane, text) {
-  return ['send-keys', '-t', pane, text, 'Enter'];
+  return ['send-keys', '-t', pane, text];
+}
+
+export function buildSendEnterArgs(pane) {
+  return ['send-keys', '-t', pane, 'Enter'];
 }
 
 export function buildDisplayArgs(pane, format) {
@@ -33,6 +37,11 @@ export async function capturePane(pane, lines = 200) {
 
 export async function sendKeys(pane, text) {
   await execFileAsync('tmux', buildSendKeysArgs(pane, text));
+  // Claude Code's TUI debounces input; an Enter sent in the same batch as the
+  // text gets absorbed as a newline instead of submitting. Pause, then send
+  // Enter as a separate keypress so it registers as submit.
+  await new Promise((r) => setTimeout(r, 300));
+  await execFileAsync('tmux', buildSendEnterArgs(pane));
 }
 
 export async function getPaneCommand(pane) {
